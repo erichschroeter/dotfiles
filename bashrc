@@ -97,6 +97,3 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-
-# specify monitor positions
-xrandr --output DVI-I-1 --auto --left-of DVI-I-2

@@ -27,3 +27,6 @@ if [ -e /usr/share/terminfo/x/xterm-256color ]; then
 else
 	export TERM='xterm-color'
 fi
+
+# specify monitor positions
+#xrandr --output DVI-I-1 --auto --left-of DVI-I-2

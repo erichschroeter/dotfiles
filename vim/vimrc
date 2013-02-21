@@ -86,6 +86,12 @@ set smartindent
 " Change color after 80 characters
 "match Error '\%>80v.\+'
 
+" Map Ctrl + hjkl keys to navigate between split windows
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-h> <C-w>h
+map <C-l> <C-w>l
+
 " File Associations
 if has("autocmd")
   autocmd BufRead,BufNewFile *.gradle set filetype=groovy

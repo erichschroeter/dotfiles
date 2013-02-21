@@ -67,8 +67,8 @@ let &guicursor = &guicursor . ",a:blinkon0"
 " Color Schemes
 syntax enable
 set background=dark
-"let g:solarized_termcolors=256
-"colorscheme solarized
+let g:solarized_termcolors=256
+colorscheme solarized
 
 " Don't pollute file system with duplicat files
 set nobackup

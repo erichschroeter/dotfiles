@@ -97,3 +97,7 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+# aliases for CMake out-of-source builds
+alias build='mkdir build && cd build && cmake ..'
+alias rbuild='cd .. && rm -r build'

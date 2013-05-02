@@ -115,3 +115,6 @@ endfunc
 if has("autocmd")
   autocmd BufWritePost .vimrc source $MYVIMRC
 endif
+
+set relativenumber
+setglobal relativenumber

@@ -101,3 +101,7 @@ fi
 # aliases for CMake out-of-source builds
 alias build='mkdir build && cd build && cmake ..'
 alias rbuild='cd .. && rm -r build'
+
+# Git aware bash prompt
+export PS1='\[\033[01;34m\] \w\[\033[01;33m\]$(__git_ps1)\[\033[01;34m\] \$\[\033[00m\] '
+export GIT_PS1_SHOWDIRTYSTATE=1

@@ -1,3 +1,6 @@
+" add ctrlp to runtimepath
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
 if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
    set fileencodings=ucs-bom,utf-8,latin1
 endif
@@ -45,6 +48,10 @@ if has("cscope") && filereadable("/usr/bin/cscope")
    set csverb
 endif
 
+" Folding
+au BufWinLeave * silent! mkview
+au BufWinEnter * silent! loadview
+
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
@@ -55,7 +62,7 @@ endif
 filetype plugin on
 
 if &term=="xterm"
-     set t_Co=8
+     set t_Co=256
      set t_Sb=[4%dm
      set t_Sf=[3%dm
 endif
@@ -67,8 +74,8 @@ let &guicursor = &guicursor . ",a:blinkon0"
 " Color Schemes
 syntax enable
 set background=dark
-"let g:solarized_termcolors=256
-"colorscheme solarized
+let g:solarized_termcolors=256
+colorscheme solarized
 
 " Don't pollute file system with duplicat files
 set nobackup
@@ -85,6 +92,21 @@ set smartindent
 
 " Change color after 80 characters
 "match Error '\%>80v.\+'
+
+" Map Ctrl + hjkl keys to navigate between split windows
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-h> <C-w>h
+map <C-l> <C-w>l
+
+" Whitespace
+highlight ExtraWhitespace ctermbg=red guibg=red
+" Show trailing whitespace:
+match ExtraWhitespace /\s\+$/
+au BufWinEnter * match ExtraWhitespace /\s\+$/
+au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+au InsertLeave * match ExtraWhitespace /\s\+$/
+au BufWinLeave * call clearmatches()
 
 " File Associations
 if has("autocmd")
@@ -105,3 +127,6 @@ endfunc
 if has("autocmd")
   autocmd BufWritePost .vimrc source $MYVIMRC
 endif
+
+set relativenumber
+setglobal relativenumber

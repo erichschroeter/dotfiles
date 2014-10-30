@@ -1,6 +1,7 @@
 # Generated Files
 *.swp
 *.o
+vim/view/
 
 # Compiled Files
 dwm/dwm

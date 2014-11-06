@@ -112,6 +112,7 @@ au BufWinLeave * call clearmatches()
 if has("autocmd")
   autocmd BufRead,BufNewFile *.gradle set filetype=groovy
   autocmd BufRead,BufNewFile *.md set filetype=markdown
+  autocmd BufRead,BufNewFile *.bb set filetype=bitbake
 endif
 
 " Show highlighting groups for current word

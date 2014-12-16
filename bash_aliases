@@ -13,3 +13,8 @@ bb_source_directory() {
 }
 alias bitbakesrcdir=bb_source_directory
 alias bitbakeclean='bitbake -c clean linux-ti-staging u-boot-ti-staging && rm tmp/deploy/images/gmcm/gmcm-image-*'
+bb_dependencies() {
+	bitbake -g $1 && cat pn-depends.dot | grep -v -e '-native' | \
+	grep -v digraph | grep -v -e '-image' | awk '{print $1}' | sort | uniq
+}
+alias bitbakedependencies=bb_dependencies

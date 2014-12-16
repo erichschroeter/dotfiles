@@ -12,3 +12,4 @@ bb_source_directory() {
 	bitbake -e $1 | grep "^S="
 }
 alias bitbakesrcdir=bb_source_directory
+alias bitbakeclean='bitbake -c clean linux-ti-staging u-boot-ti-staging && rm tmp/deploy/images/gmcm/gmcm-image-*'

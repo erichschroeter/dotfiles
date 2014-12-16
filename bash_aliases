@@ -18,3 +18,7 @@ bb_dependencies() {
 	grep -v digraph | grep -v -e '-image' | awk '{print $1}' | sort | uniq
 }
 alias bitbakedependencies=bb_dependencies
+
+ipk_extract() {
+	 ar x $1 && mkdir $1.dir && tar -xzf control.tar.gz -C $1.dir && tar -xzf data.tar.gz -C $1.dir
+}

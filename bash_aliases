@@ -22,3 +22,6 @@ alias bitbakedependencies=bb_dependencies
 ipk_extract() {
 	 ar x $1 && mkdir $1.dir && tar -xzf control.tar.gz -C $1.dir && tar -xzf data.tar.gz -C $1.dir
 }
+ipk_clean() {
+	 rm -r control.tar.gz data.tar.gz debian-binary $1.dir
+}

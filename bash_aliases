@@ -25,3 +25,6 @@ ipk_extract() {
 ipk_clean() {
 	 rm -r control.tar.gz data.tar.gz debian-binary $1.dir
 }
+
+# Extract mp3 from youtube URL
+alias youtube-dl-mp3='youtube-dl -t -x --audio-quality 0 --audio-format mp3'

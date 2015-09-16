@@ -32,3 +32,7 @@ alias youtube-dl-mp3='youtube-dl -t -x --audio-quality 0 --audio-format mp3'
 # vlc
 # version <= 2.0.8 edit /usr/share/vlc/lua/http/.hosts
 alias vlchttp='nohup vlc --extraintf=luahttp --fullscreen &'
+
+# Handbrake CLI
+alias HandBrakeCLI-scan='HandBrakeCLI --scan -t 0 -i /dev/dvd'
+alias HandBrakeCLI-rip-dvd='HandBrakeCLI -m --main-feature -i /dev/dvd'

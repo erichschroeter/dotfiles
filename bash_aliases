@@ -36,3 +36,6 @@ alias vlchttp='nohup vlc --extraintf=luahttp --fullscreen &'
 # Handbrake CLI
 alias HandBrakeCLI-scan='HandBrakeCLI --scan -t 0 -i /dev/dvd'
 alias HandBrakeCLI-rip-dvd='HandBrakeCLI -m --main-feature -i /dev/dvd'
+
+# avconv aliases
+alias record='avconv -f x11grab -s 1920x1080 -r 25 -i :0.0'

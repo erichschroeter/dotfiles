@@ -1,5 +1,10 @@
 " add ctrlp to runtimepath
 set runtimepath^=~/.vim/bundle/ctrlp.vim
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v\.[\/](objs)[\/]\.$',
+    \ 'file': '\v\.(o|ti|d|dbo|exe|dll|so)$',
+    \ }
+
 
 if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
    set fileencodings=ucs-bom,utf-8,latin1

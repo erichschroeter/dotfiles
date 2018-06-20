@@ -81,6 +81,7 @@ syntax enable
 set background=dark
 let g:solarized_termcolors=256
 "colorscheme solarized
+"colorscheme cobalt2
 colorscheme railscasts
 
 " Don't pollute file system with duplicat files

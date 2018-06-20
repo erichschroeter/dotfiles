@@ -42,3 +42,6 @@ alias record='avconv -f x11grab -s 1920x1080 -r 25 -i :0.0'
 
 # ISO 8601 date format
 alias date='date +"%Y-%m-%dT%H:%M:%SZ"'
+
+# Git
+alias gl='git log --oneline --graph --color'

@@ -80,7 +80,8 @@ let &guicursor = &guicursor . ",a:blinkon0"
 syntax enable
 set background=dark
 let g:solarized_termcolors=256
-colorscheme solarized
+"colorscheme solarized
+colorscheme railscasts
 
 " Don't pollute file system with duplicat files
 set nobackup

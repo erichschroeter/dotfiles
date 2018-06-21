@@ -1,6 +1,7 @@
 # Generated Files
 *.swp
 *.o
+*.pyc
 vim/view/
 
 # Compiled Files

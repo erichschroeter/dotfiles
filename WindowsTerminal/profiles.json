@@ -22,7 +22,7 @@
             "useAcrylic": true,
             "acrylicOpacity": 0.9,
             "fontSize": 8,
-            "fontFace": "Delugia Nerd Font",
+            "fontFace": "Delugia",
             "colorScheme": "Solarized Dark - Patched",
             "hidden": false
         },
@@ -34,7 +34,7 @@
             "useAcrylic": true,
             "acrylicOpacity": 0.9,
             "fontSize": 8,
-            "fontFace": "Delugia Nerd Font",
+            "fontFace": "Delugia",
             "hidden": false
         },
         {
@@ -46,7 +46,7 @@
             "useAcrylic": true,
             "acrylicOpacity": 0.9,
             "fontSize": 8,
-            "fontFace": "Delugia Nerd Font",
+            "fontFace": "Delugia",
             "colorScheme": "Solarized Dark - Patched",
             "historySize": 9001,
             "hidden": false
@@ -60,7 +60,7 @@
           "useAcrylic": true,
           "acrylicOpacity": 0.9,
           "fontSize": 8,
-          "fontFace": "Delugia Nerd Font",
+          "fontFace": "Delugia",
           "hidden": false
         },
         {
@@ -70,7 +70,7 @@
             "useAcrylic": true,
             "acrylicOpacity": 0.9,
             "fontSize": 8,
-            "fontFace": "Delugia Nerd Font",
+            "fontFace": "Delugia",
             "source": "Windows.Terminal.Wsl"
         },
         {
@@ -250,7 +250,7 @@
             "useAcrylic": true,
             "acrylicOpacity": 0.9,
             "fontSize": 8,
-            "fontFace": "Delugia Nerd Font",
+            "fontFace": "Delugia",
             "colorScheme": "Solarized Dark - Patched",
             "hidden": false
         },
@@ -262,7 +262,7 @@
             "useAcrylic": true,
             "acrylicOpacity": 0.9,
             "fontSize": 8,
-            "fontFace": "Delugia Nerd Font",
+            "fontFace": "Delugia",
             "hidden": false
         },
         {
@@ -274,7 +274,7 @@
             "useAcrylic": true,
             "acrylicOpacity": 0.9,
             "fontSize": 8,
-            "fontFace": "Delugia Nerd Font",
+            "fontFace": "Delugia",
             "colorScheme": "Solarized Dark - Patched",
             "historySize": 9001,
             "hidden": false
@@ -286,7 +286,7 @@
             "useAcrylic": true,
             "acrylicOpacity": 0.9,
             "fontSize": 8,
-            "fontFace": "Delugia Nerd Font",
+            "fontFace": "Delugia",
             "source": "Windows.Terminal.Wsl"
         },
         {

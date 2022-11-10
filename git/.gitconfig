@@ -1,0 +1,15 @@
+[user]
+	name = Erich Schroeter
+	email = erich.schroeter@gmail.com
+[alias]
+	lol = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[core]
+	editor = vim
+[color]
+	ui = auto
+[pull]
+	rebase = false
+[fetch]
+	prune = false
+[rebase]
+	autoStash = false

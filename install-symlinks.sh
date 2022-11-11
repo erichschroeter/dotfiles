@@ -9,14 +9,16 @@ Installs symlinks for files in this repo into '$HOME'.
 Options:
   -h, --help                     Print this menu and exit.
   -v, --verbose                  Print verbose info.
+  -d, --dry-run                  Dry run. See what would happen if actual commands execute.
 EOF
 }
 
-SHORT=v,h
-LONG=verbose,help
+SHORT=d,v,h
+LONG=dry-run,verbose,help
 OPTS=$(getopt -a -n install-symlinks.sh --options $SHORT --longoptions $LONG -- "$@")
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
 BACKUP_EXT=.bak
+DRYRUN=0
 
 VALID_ARGUMENTS=$# # Returns the count of arguments that are in short or long options
 
@@ -29,6 +31,10 @@ eval set -- "$OPTS"
 while :
 do
   case "$1" in
+    -d | --dry-run)
+      DRYRUN=1
+      break
+      ;;
     -h | --help)
       usage
       exit 0
@@ -56,14 +62,25 @@ install_with_backup_check() {
 	# -f    file exists and is regular file
 	# -e    file exists regardless of type
 	if [ -e "$INSTALL_PATH" ]; then
-		read -p "$INSTALL_PATH already exists. Create backup? [yN] " -n 1 -r
+		read -p "$INSTALL_PATH already exists. Create backup? [yNq] " -n 1 -r
 		echo # move to new line
 		if [[ $REPLY =~ ^[Yy]$ ]]; then
-			mv $INSTALL_PATH $INSTALL_PATH$BACKUP_EXT
-			ln -s $SRC_PATH $INSTALL_PATH
+			if [ $DRYRUN -eq 1 ]; then
+				echo -e "dry-run:\tmv $INSTALL_PATH $INSTALL_PATH$BACKUP_EXT"
+				echo -e "dry-run:\tln -s $SRC_PATH $INSTALL_PATH"
+			else
+				mv $INSTALL_PATH $INSTALL_PATH$BACKUP_EXT
+				ln -s $SRC_PATH $INSTALL_PATH
+			fi
+		elif [[ $REPLY =~ ^[Qq]$ ]]; then
+			exit 0
 		fi
 	else
-		ln -s $SRC_PATH $INSTALL_PATH
+		if [ $DRYRUN -eq 1 ]; then
+			echo -e "dry-run:\tln -s $SRC_PATH $INSTALL_PATH"
+		else
+			ln -s $SRC_PATH $INSTALL_PATH
+		fi
 	fi
 }
 
@@ -71,4 +88,5 @@ install_with_backup_check bashrc .bashrc
 install_with_backup_check bash_aliases .bash_aliases
 install_with_backup_check profile .profile
 install_with_backup_check git/.gitconfig
+install_with_backup_check config .config
 

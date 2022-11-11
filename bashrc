@@ -106,3 +106,10 @@ export GIT_PS1_SHOWDIRTYSTATE=1
 if [ -f /usr/share/virtualenvwrapper/virtualenvwrapper.sh ]; then
     . /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 fi
+
+# check if starship exists on PATH before executing it
+if command -v starship &> /dev/null
+then
+	eval "$(starship init bash)"
+fi
+

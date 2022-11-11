@@ -18,8 +18,10 @@
     ```
 2. Add the following to `$PROFILE`:
     ```powershell
+    $ENV:STARSHIP_CONFIG = "$HOME\dotfiles\config\starship.toml"
+    Get-ExecutionPolicy -Scope CurrentUser -OutVariable CurrentUserExecutionPolicy
     Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
     If(Get-Command starship -errorAction SilentlyContinue){Invoke-Expression (&starship init powershell)}
-    Set-ExecutionPolicy Restricted -Scope CurrentUser
+    Set-ExecutionPolicy $CurrentUserExecutionPolicy -Scope CurrentUser
     ```
 

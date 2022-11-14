@@ -24,7 +24,7 @@ style = "bold green"
 
 [git_branch]
 style = "italic fg:#bf5700"
-format = "[ $branch]($style) "
+format = "[](fg:#bf5700) [$branch]($style) "
 
 [git_commit]
 style = "italic fg:#bf5700"

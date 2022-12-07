@@ -107,6 +107,27 @@ if [ -f /usr/share/virtualenvwrapper/virtualenvwrapper.sh ]; then
     . /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 fi
 
+# ssh-agent configuration
+#if [ -z "$(pgrep ssh-agent)" ]; then
+#	rm -rf /tmp/ssh-*
+#	eval $(ssh-agent -s) > /dev/null
+#else
+#	export SSH_AGENT_PID=$(pgrep ssh-agent)
+#	export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name agent.*)
+#fi
+ssh-add -l &>/dev/null
+if [ "$?" == 2 ]; then
+  test -r ~/.ssh-agent && \
+    eval "$(<~/.ssh-agent)" >/dev/null
+
+  ssh-add -l &>/dev/null
+  if [ "$?" == 2 ]; then
+    (umask 066; ssh-agent > ~/.ssh-agent)
+    eval "$(<~/.ssh-agent)" >/dev/null
+    ssh-add
+  fi
+fi
+
 # check if starship exists on PATH before executing it
 if command -v starship &> /dev/null
 then

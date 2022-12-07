@@ -89,4 +89,6 @@ install_with_backup_check bash_aliases .bash_aliases
 install_with_backup_check profile .profile
 install_with_backup_check git/.gitconfig
 install_with_backup_check config .config
+install_with_backup_check vim .vim
+install_with_backup_check vim/vimrc .vimrc
 

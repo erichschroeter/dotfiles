@@ -1,4 +1,22 @@
 
+# Installation
+
+1. install [stow](https://www.gnu.org/software/stow/) (see [docs](https://www.gnu.org/software/stow/manual/stow.html))
+    ```bash
+    sudo apt install stow
+    ```
+1. clone [erichschroeter/dotfiles.git](https://github.com/erichschroeter/dotfiles)
+    ```bash
+    cd ~
+    git clone git@github.com:erichschroeter/dotfiles.git .dotfiles
+    cd .dotfiles/
+    ```
+1. run `stow`
+    ```bash
+    stow --adopt .
+    ```
+
+# Linux 
 ## Linux
 
 1. Install [Starship](https://starship.rs/guide/#%F0%9F%9A%80-installation)

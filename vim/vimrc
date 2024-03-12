@@ -1,57 +1,152 @@
-" add ctrlp to runtimepath
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v\.[\/](objs)[\/]\.$',
-    \ 'file': '\v\.(o|ti|d|dbo|exe|dll|so)$',
-    \ }
+""""""
+" UI "
+""""""
+
+" disable vi compatibility
+set nocompatible
+
+" automatically load changed files
+set autoread
+
+" auto-reload vimrc
+autocmd! bufwritepost vimrc source ~/.vim/vimrc
+"autocmd! bufwritepost gvimrc source ~/.vim/gvimrc
+
+" show the filename in the window titlebar
+set title
+
+" set encoding
+set encoding=utf-8
+
+" directories for swp files
+set backupdir=~/.vim/backup
+set directory=~/.vim/backupf
+set nobackup                    " Don't pollute file system with duplicate files
+
+" mouse support
+set mouse=a
+
+" wrapping stuff
+set textwidth=80
+set colorcolumn=80
+
+" ignore whitespace in diff mode
+set diffopt+=iwhite
+
+" Be able to arrow key and backspace across newlines
+set whichwrap=bs<>[]
+
+" Status bar
+set laststatus=2
+
+" remember last cursor position
+autocmd BufReadPost *
+	\ if line("'\"") > 0 && line("'\"") <= line("$") |
+	\ 	exe "normal g`\"" |
+	\ endif
+
+" show '>   ' at the beginning of lines that are automatically wrapped
+set showbreak=>\ \ \ 
+
+" enable completion
+set ofu=syntaxcomplete#Complete
+
+" make laggy connections work faster
+set ttyfast
+
+" let vim open up to 100 tabs at once
+set tabpagemax=100
+
+" case-insensitive filename completion
+set wildignorecase
 
 
-if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
-   set fileencodings=ucs-bom,utf-8,latin1
-endif
+" General
+set nocompatible                " Use Vim defaults (much better!)
+set number                      " Show line numbers
+set relativenumber
+setglobal relativenumber
+set linebreak                   " Break lines at word (requires Wrap lines)
+set showbreak=+++               " Wrap-broken line prefix
+set textwidth=100               " Line wrap (number of cols)
+set showmatch                   " Highlight matching brace
+set showcmd                     " display incomplete commands at the bottom
+set visualbell                  " Use visual bell (no beeping)
+set cursorline                  " highlight cursor line
 
-set nocompatible	" Use Vim defaults (much better!)
-set bs=indent,eol,start		" allow backspacing over everything in insert mode
-"set ai			" always set autoindenting on
-"set backup		" keep a backup file
-set viminfo='20,\"50	" read/write a .viminfo file, don't store more
-			" than 50 lines of registers
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
+"""""""""""""
+" Searching "
+"""""""""""""
 
-" Only do this part when compiled with support for autocommands
-if has("autocmd")
-  augroup redhat
-  autocmd!
-  " In text files, always limit the width of text to 78 characters
-  autocmd BufRead *.txt set tw=78
-  " When editing a file, always jump to the last cursor position
-  autocmd BufReadPost *
-  \ if line("'\"") > 0 && line ("'\"") <= line("$") |
-  \   exe "normal! g'\"" |
-  \ endif
-  " don't write swapfile on most commonly used directories for NFS mounts or USB sticks
-  autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
-  " start with spec file template
-  autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
-  augroup END
-endif
+set hlsearch    " when there is a previous search pattern, highlight all its matches
+set incsearch   " while typing a search command, show immediately where the so far typed pattern matches
+set ignorecase  " ignore case in search patterns
+set smartcase   " override the 'ignorecase' option if the search pattern contains uppercase characters
+set gdefault    " imply global for new searches
 
-" autoload cscope database if it exists
-if has("cscope") && filereadable("/usr/bin/cscope")
-   set csprg=/usr/bin/cscope
-   set csto=0
-   set cst
-   set nocsverb
-   " add any database in current directory
-   if filereadable("cscope.out")
-      cs add cscope.out
-   " else add database pointed to by environment
-   elseif $CSCOPE_DB != ""
-      cs add $CSCOPE_DB
-   endif
-   set csverb
-endif
+
+"""""""""""""
+" Indenting "
+"""""""""""""
+
+" When auto-indenting, use the indenting format of the previous line
+set copyindent
+" When on, a <Tab> in front of a line inserts blanks according to 'shiftwidth'.
+" 'tabstop' is used in other places. A <BS> will delete a 'shiftwidth' worth of
+" space at the start of the line.
+set smarttab
+" Copy indent from current line when starting a new line (typing <CR> in Insert
+" mode or when using the "o" or "O" command)
+set autoindent
+" Automatically inserts one extra level of indentation in some cases, and works
+" for C-like files
+set smartindent
+
+ 
+" Advanced
+set ruler                       " Show row and column ruler information
+set history=50                  " keep 50 lines of command line history
+set undolevels=1000             " Number of undo levels
+set backspace=indent,eol,start  " allow backspacing over everything in insert mode
+
+" make laggy connections work faster
+set ttyfast
+
+" let vim open up to 100 tabs at once
+set tabpagemax=100
+
+" case-insensitive filename completion
+set wildignorecase
+ 
+
+"""""""""
+" Theme "
+"""""""""
+
+syntax enable
+"set background=dark " uncomment this if your terminal has a dark background
+let g:solarized_termcolors=256
+"colorscheme solarized
+"colorscheme cobalt2
+"colorscheme vividchalk
+colorscheme railscasts
+
+" Change color after 80 characters
+"match Error '\%>80v.\+'
+
+""""""""
+" GVim "
+""""""""
+
+"disable cursor blinking
+set gcr=n:blinkon0
+" Don't wake up system with blinking cursor:
+" http://www.linuxpowertop.org/known.php
+" let &guicursor = &guicursor . ",a:blinkon0"
+
+"remove menu bar
+set guioptions-=m
+
 
 " Folding
 au BufWinLeave * silent! mkview
@@ -72,35 +167,6 @@ if &term=="xterm"
      set t_Sf=[3%dm
 endif
 
-" Don't wake up system with blinking cursor:
-" http://www.linuxpowertop.org/known.php
-let &guicursor = &guicursor . ",a:blinkon0"
-
-" Color Schemes
-syntax enable
-set background=dark
-let g:solarized_termcolors=256
-"colorscheme solarized
-"colorscheme cobalt2
-"colorscheme vividchalk
-colorscheme railscasts
-
-" Don't pollute file system with duplicat files
-set nobackup
-
-" Display line numbers
-set nu
-
-" Spacing
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-"set expandtab
-set smartindent
-
-" Change color after 80 characters
-"match Error '\%>80v.\+'
-
 " Map Ctrl + hjkl keys to navigate between split windows
 map <C-j> <C-w>j
 map <C-k> <C-w>k
@@ -116,13 +182,6 @@ au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhitespace /\s\+$/
 au BufWinLeave * call clearmatches()
 
-" File Associations
-if has("autocmd")
-  autocmd BufRead,BufNewFile *.gradle set filetype=groovy
-  autocmd BufRead,BufNewFile *.md set filetype=markdown
-  autocmd BufRead,BufNewFile *.bb set filetype=bitbake
-endif
-
 " Show highlighting groups for current word
 nmap <C-S-P> :call <SID>SynStack()<CR>
 function! <SID>SynStack()
@@ -131,11 +190,3 @@ function! <SID>SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-
-" Auto apply the changes to .vimrc after saving
-if has("autocmd")
-  autocmd BufWritePost .vimrc source $MYVIMRC
-endif
-
-set relativenumber
-setglobal relativenumber

@@ -40,6 +40,12 @@ alias HandBrakeCLI-rip-dvd='HandBrakeCLI -m --main-feature -i /dev/dvd'
 # avconv aliases
 alias record='avconv -f x11grab -s 1920x1080 -r 25 -i :0.0'
 
+# Rust UNIX tools
+alias ll='exa -alh'
+alias ls='exa'
+alias cat='bat -p'
+alias tree='exa --tree'
+
 # ISO 8601 date format
 alias date='date +"%Y-%m-%dT%H:%M:%SZ"'
 

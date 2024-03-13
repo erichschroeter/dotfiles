@@ -11,11 +11,12 @@ $directory\
 $git_branch\
 $git_commit\
 $git_state
-\\$ """
+$character"""
 
-# Replace the "❯" symbol in the prompt with "➜"
-[character] # The name of the module we are configuring is "character"
-#success_symbol = "[➜](bold green)" # The "success_symbol" segment is being set to "➜" with the color "bold green"
+[character]
+format = '$symbol '
+success_symbol = "[\\$](fg:#a6e3a1)"
+error_symbol = "[\\$](fg:#f38ba8)"
 
 [directory]
 truncation_length = 4

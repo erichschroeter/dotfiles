@@ -2,7 +2,7 @@
 *.swp
 *.o
 *.pyc
-vim/view/
+.vim/view/
 
 # Compiled Files
 dwm/dwm

@@ -128,8 +128,7 @@ syntax enable
 let g:solarized_termcolors=256
 "colorscheme solarized
 "colorscheme cobalt2
-"colorscheme vividchalk
-colorscheme railscasts
+colorscheme catppuccin_mocha
 
 " Change color after 80 characters
 "match Error '\%>80v.\+'

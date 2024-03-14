@@ -36,11 +36,11 @@ truncate_to_repo = false
 style = "bold green"
 
 [git_branch]
-style = "italic fg:#fab387"
+style = "fg:#fab387"
 format = "[](fg:#fab387) [$branch]($style) "
 
 [git_commit]
-style = "italic fg:#fab387"
+style = "fg:#fab387"
 only_detached = false
 
 # Disable the package module, hiding it from the prompt completely

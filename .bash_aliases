@@ -45,9 +45,9 @@ alias ll='exa -alh'
 alias ls='exa'
 alias cat='bat -p'
 alias tree='exa --tree'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
 # ISO 8601 date format
 alias date='date +"%Y-%m-%dT%H:%M:%SZ"'
-
-# Git
-alias gl='git log --oneline --graph --color'

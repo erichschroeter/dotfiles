@@ -7,16 +7,28 @@ add_newline = true
 #[←](#9A348E)\
 #[→](fg:#bf5700)\
 format = """\
+[╭╴](238)$os\
 $directory\
 $git_branch\
 $git_commit\
 $git_state
-$character"""
+[╰─](238)$character"""
 
 [character]
 format = '$symbol '
 success_symbol = "[\\$](fg:#a6e3a1)"
 error_symbol = "[\\$](fg:#f38ba8)"
+
+[os]
+format = '[$symbol](bold white) '
+disabled = true
+
+[os.symbols]
+Windows = ''
+Arch = '󰣇'
+Linux = "🐧"
+Ubuntu = ''
+Macos = '󰀵'
 
 [directory]
 truncation_length = 4
@@ -24,11 +36,11 @@ truncate_to_repo = false
 style = "bold green"
 
 [git_branch]
-style = "italic fg:#bf5700"
-format = "[](fg:#bf5700) [$branch]($style) "
+style = "italic fg:#fab387"
+format = "[](fg:#fab387) [$branch]($style) "
 
 [git_commit]
-style = "italic fg:#bf5700"
+style = "italic fg:#fab387"
 only_detached = false
 
 # Disable the package module, hiding it from the prompt completely

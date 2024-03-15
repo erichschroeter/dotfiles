@@ -43,7 +43,7 @@ alias record='avconv -f x11grab -s 1920x1080 -r 25 -i :0.0'
 # Rust UNIX tools
 alias ll='exa -alh'
 alias ls='exa'
-alias cat='bat -p'
+alias cat='batcat -p'
 alias tree='exa --tree'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'

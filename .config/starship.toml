@@ -23,6 +23,7 @@ error_symbol = "[\\$](fg:#f38ba8)"
 [hostname]
 style = "fg:#89dceb"
 ssh_only = true
+ssh_symbol = ""
 disabled = false
 
 [os]

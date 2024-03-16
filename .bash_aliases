@@ -27,7 +27,7 @@ ipk_clean() {
 }
 
 # Extract mp3 from youtube URL
-alias youtube-dl-mp3='youtube-dl -o "%(title)s-%(id)s.%(ext)s" -x --audio-quality 0 --audio-format mp3'
+alias youtube-dl-mp3='yt-dlp -o "%(title)s-%(id)s.%(ext)s" -x --audio-quality 0 --audio-format mp3'
 
 # vlc
 # version <= 2.0.8 edit /usr/share/vlc/lua/http/.hosts

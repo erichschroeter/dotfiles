@@ -8,6 +8,7 @@ add_newline = true
 #[→](fg:#bf5700)\
 format = """\
 [╭╴](238)$os\
+$hostname\
 $directory\
 $git_branch\
 $git_commit\
@@ -18,6 +19,11 @@ $git_state
 format = '$symbol '
 success_symbol = "[\\$](fg:#a6e3a1)"
 error_symbol = "[\\$](fg:#f38ba8)"
+
+[hostname]
+style = "fg:#89dceb"
+ssh_only = true
+disabled = false
 
 [os]
 format = '[$symbol](bold white) '

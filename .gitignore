@@ -3,6 +3,7 @@
 *.o
 *.pyc
 .vim/view/
+.config/tmux/plugins/
 
 # Compiled Files
 dwm/dwm

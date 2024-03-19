@@ -20,6 +20,9 @@ shopt -s checkwinsize
 shopt -s histappend
 PROMPT_COMMAND='history -a'
 
+# Rust environment
+. "$HOME/.cargo/env"
+
 ################################################################################
 # ALIASES
 ################################################################################

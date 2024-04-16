@@ -28,6 +28,13 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+WINHOME="/mnt/c/Users/erich"
+# Check if the directory /mnt/c/User/erich exists
+if [ -d "$WINHOME" ]; then
+  # Export a WINHOME variable equal to the directory path
+  export WINHOME
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).

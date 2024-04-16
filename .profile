@@ -33,6 +33,11 @@ else
 	export TERM='xterm-color'
 fi
 
+# Rust environment
+if [ -f "~/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
+
 # specify monitor positions
 #xrandr --output DVI-I-1 --auto --left-of DVI-I-2
 

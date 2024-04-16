@@ -27,7 +27,7 @@ ipk_clean() {
 }
 
 m3u8_download() {
-	ffmpeg -i "$1" -c:v libx264 -preset ultrafast -crf 10 "$2"
+	ffmpeg -i "$1" -c:v libx264 -preset ultrafast -crf 20 "$2"
 }
 # Extract mp3 from youtube URL
 alias youtube-dl-mp3='yt-dlp -o "%(title)s-%(id)s.%(ext)s" -x --audio-quality 0 --audio-format mp3'

@@ -34,7 +34,7 @@ else
 fi
 
 # Rust environment
-if [ -f "~/.cargo/env" ]; then
+if [ -f "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
 fi
 

@@ -12,7 +12,8 @@ $hostname\
 $directory\
 $git_branch\
 $git_commit\
-$git_state
+$git_state\
+$python
 [╰─](238)$character"""
 
 [character]

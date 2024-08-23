@@ -1,34 +1,27 @@
 
-# Installation
+# Installing my dotfiles
 
-1. install [stow](https://www.gnu.org/software/stow/) (see [docs](https://www.gnu.org/software/stow/manual/stow.html))
+## Linux
+
+1. Install dependencies
+    - [stow](https://www.gnu.org/software/stow/) (see [docs](https://www.gnu.org/software/stow/manual/stow.html))
+    - [Starship](https://starship.rs/guide/#%F0%9F%9A%80-installation)
+    - [exa](https://github.com/ogham/exa)
+    - [ripgrep](https://github.com/BurntSushi/ripgrep)
+    - [bat](https://github.com/sharkdp/bat)
     ```bash
-    sudo apt install stow
+    curl -sS https://starship.rs/install.sh | sh
+    sudo apt install stow exa ripgrep bat
     ```
-1. clone [erichschroeter/dotfiles.git](https://github.com/erichschroeter/dotfiles)
+2. Clone and install links to [erichschroeter/dotfiles.git](https://github.com/erichschroeter/dotfiles)
     ```bash
     cd ~
     git clone git@github.com:erichschroeter/dotfiles.git .dotfiles
     cd .dotfiles/
-    ```
-1. run `stow`
-    ```bash
     stow --adopt .
     ```
 
-# Linux 
-## Linux
-
-1. Install [Starship](https://starship.rs/guide/#%F0%9F%9A%80-installation)
-    ```
-    curl -sS https://starship.rs/install.sh | sh
-    ```
-2. Install symbolic links to files in this repo.
-    ```bash
-    ./install-symlinks.sh
-    ```
-
-## Linux
+## Windows
 
 1. Install [Starship](https://starship.rs/guide/#%F0%9F%9A%80-installation)
     ```powershell

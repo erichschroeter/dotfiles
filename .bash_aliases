@@ -45,10 +45,10 @@ alias HandBrakeCLI-rip-dvd='HandBrakeCLI -m --main-feature -i /dev/dvd'
 alias record='avconv -f x11grab -s 1920x1080 -r 25 -i :0.0'
 
 # Rust UNIX tools
-alias ll='exa -alh'
-alias ls='exa'
+alias ll='eza -alh'
+alias ls='eza'
 alias cat='batcat -p'
-alias tree='exa --tree'
+alias tree='eza --tree'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'

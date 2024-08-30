@@ -41,12 +41,4 @@
    ```powershell
    winget install eza-community.eza
    ```
-2. Add the following to `$PROFILE`:
-    ```powershell
-    $ENV:STARSHIP_CONFIG = "$HOME\dotfiles\config\starship.toml"
-    Get-ExecutionPolicy -Scope CurrentUser -OutVariable CurrentUserExecutionPolicy
-    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-    If(Get-Command starship -errorAction SilentlyContinue){Invoke-Expression (&starship init powershell)}
-    Set-ExecutionPolicy $CurrentUserExecutionPolicy -Scope CurrentUser
-    ```
-
+1. Copy contents of [Microsoft.PowerShell_profile.ps1](./PowerShell/Microsoft.PowerShell_profile.ps1) to `$PROFILE`:

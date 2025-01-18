@@ -48,7 +48,7 @@ alias record='avconv -f x11grab -s 1920x1080 -r 25 -i :0.0'
 # Rust UNIX tools
 alias ll='eza -alh'
 alias ls='eza'
-alias cat='batcat -p'
+alias cat='batcat -p --paging=never'
 alias tree='eza --tree'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'

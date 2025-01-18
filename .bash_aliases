@@ -31,7 +31,8 @@ m3u8_download() {
 }
 # Extract mp3 from youtube URL
 alias youtube-dl-mp3='yt-dlp -o "%(title)s-%(id)s.%(ext)s" -x --audio-quality 0 --audio-format mp3'
-alias m3u8-dl='m3u8_download'
+alias youtube-dl-vid='yt-dlp -o "%(title)s-%(id)s.%(ext)s" --audio-quality 0'
+alias m3u8='m3u8_download'
 
 # vlc
 # version <= 2.0.8 edit /usr/share/vlc/lua/http/.hosts

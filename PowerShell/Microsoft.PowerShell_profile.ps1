@@ -9,3 +9,5 @@ New-Alias -Name ls -Value eza
 function ll {eza -alh}
 function tree {eza --tree}
 #New-Alias -Name cat -Value 'batcat -p'
+
+Import-Module posh-git

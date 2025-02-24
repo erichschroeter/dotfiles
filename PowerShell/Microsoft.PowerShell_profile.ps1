@@ -1,3 +1,7 @@
+# Change default config location for Komorebi
+$Env:KOMOREBI_CONFIG_HOME = "$HOME\.dotfiles\komorebi"
+$Env:WHKD_CONFIG_HOME = "$HOME\.dotfiles\komorebi"
+
 $ENV:STARSHIP_CONFIG = "$HOME\.dotfiles\config\starship.toml"
 Get-ExecutionPolicy -Scope CurrentUser -OutVariable CurrentUserExecutionPolicy
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser

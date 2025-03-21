@@ -20,6 +20,9 @@ shopt -s checkwinsize
 shopt -s histappend
 PROMPT_COMMAND='history -a'
 
+# Expand variables, e.g. $WINHOME will expand to /mnt/c/Users/XXXX
+shopt -s direxpand
+
 ################################################################################
 # ALIASES
 ################################################################################

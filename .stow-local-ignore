@@ -23,4 +23,6 @@ _darcs
 
 # ignore Windows Terminal on Unix
 WindowsTerminal
+PowerShell
+komorebi
 fonts

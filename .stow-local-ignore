@@ -21,6 +21,11 @@ _darcs
 ^/LICENSE.*
 ^/COPYING
 
+dwm/
+dmenu/
+slock/
+.xsession.example
+
 # ignore Windows Terminal on Unix
 WindowsTerminal
 PowerShell

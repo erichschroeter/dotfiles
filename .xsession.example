@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Set up environment (optional)
+#xsetroot -cursor_name left_ptr
+#setxkbmap us
+
+# Source login and interactive shell configs
+[ -f "$HOME/.profile" ] && . "$HOME/.profile"
+[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+
+# Start apps in background
+code &
+slack &
+google-chrome &
+
+# Start the window manager
+exec dwm

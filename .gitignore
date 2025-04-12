@@ -5,6 +5,10 @@
 .vim/view/
 .config/tmux/plugins/
 
+# Backup files
+.bashrc.orig
+.profile.orig
+
 # Compiled Files
 dwm/dwm
 dmenu/

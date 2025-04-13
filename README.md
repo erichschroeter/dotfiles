@@ -78,6 +78,16 @@
     ```bash
     sudo make clean install
     ```
+1. [slstatus](https://tools.suckless.org/slstatus/)
+    ```bash
+    git clone https://git.suckless.org/slstatus && cd slstatus
+    ```
+    ```bash
+    ln -s ../dwm/config.slstatus.h config.h
+    ```
+    ```bash
+    sudo make clean install
+    ```
 1. [rterm](https://github.com/mechpen/rterm)
 
     Install [Rust](https://www.rust-lang.org/tools/install)

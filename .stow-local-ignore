@@ -21,12 +21,14 @@ _darcs
 ^/LICENSE.*
 ^/COPYING
 
-dwm/
-dmenu/
-slock/
+\dwm
+\dmenu
+\rterm
+\slock
+\slstatus
 .xsession.example
 
-# ignore Windows Terminal on Unix
+# ignore Windows stuff on Unix
 WindowsTerminal
 PowerShell
 komorebi

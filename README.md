@@ -3,6 +3,7 @@
   - [Windows](#windows)
   - [Linux (Ubuntu)](#linux-ubuntu)
     - [dwm](#dwm)
+  - [devcontainer](#devcontainer)
 
 ## Windows
 
@@ -115,3 +116,15 @@
     # copy .xsession.example to .xsession and modify to your liking
     ln -st ~ ~/.dotfiles/.xsession
     ```
+## devcontainer
+
+```bash
+sudo apt update && sudo apt install -y gpg && sudo mkdir -p /etc/apt/keyrings && \
+wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg && \
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list && \
+sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list && \
+sudo apt update && \
+curl -sS https://starship.rs/install.sh -y | sudo sh && \
+sudo apt install -y bat curl eza ripgrep stow tmux && \
+. ~/.bashrc
+```

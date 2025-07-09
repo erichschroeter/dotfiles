@@ -1,0 +1,6 @@
+[font]
+normal = {family = "Cascadia Code NF", style = "Regular" }
+size = 8
+
+[selection]
+save_to_clipboard = true

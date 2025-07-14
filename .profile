@@ -26,6 +26,10 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
+if [ -d "/opt/nvim-linux-x86_64/bin" ] ; then
+    PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+fi
+
 # enable 256 colors if available
 if [ -e /usr/share/terminfo/x/xterm-256color ]; then
 	export TERM='xterm-256color'

@@ -1,14 +1,27 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        tag = "v0.9.2",
+        tag = "v0.9.3",
         event = { "BufReadPost", "BufNewFile" },
         run = function()
             require("nvim-treesitter.install").update({ with_sync = true })
         end,
         config = function()
             require("nvim-treesitter.configs").setup({
-                ensure_installed = { "c", "cpp", "qmldir", "bash", "lua", "vim", "vimdoc", "query" },
+                ensure_installed = {
+			"bitbake",
+			"c",
+			"cpp",
+			"bash",
+			"devicetree",
+			"diff",
+			"lua",
+			"python",
+			"rust",
+			"vim",
+			"vimdoc",
+			"query"
+		},
                 sync_install = false,
                 auto_install = true,
                 highlight = {

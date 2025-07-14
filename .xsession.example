@@ -8,10 +8,28 @@
 [ -f "$HOME/.profile" ] && . "$HOME/.profile"
 [ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
 
-# Start apps in background
-code &
-slack &
-google-chrome &
+# Helper to check and launch a program
+launch_if_exists() {
+    command -v "$1" >/dev/null 2>&1 && "$1" &
+}
+
+# Detect session
+SESSION="${DESKTOP_SESSION,,}"  # lowercase
+
+# Launch apps
+launch_if_exists obsidian
+launch_if_exists google-chrome
+launch_if_exists code
+
+# Wait a moment for windows to spawn
+sleep 2
+
+# Multi-monitor initialization
+MONITOR_LAYOUT="$HOME/.screenlayout/default.sh"
+[ -f "$MONITOR_LAYOUT" ] && $MONITOR_LAYOUT
 
 # Start the window manager
-exec dwm
+if [[ "$SESSION" == "dwm" ]]; then
+    exec slstatus &
+    exec dwm
+fi

@@ -66,7 +66,7 @@ static const char unknown_str[] = "n/a";
 static const struct arg args[] = {
 	/* function format          argument */
 #ifdef WITH_BATTERY
-	{ battery_perc, "%s%%",          "BAT0" },
+	{ battery_perc, " %s%%",         "BAT0" },
 	{ datetime,     " | %s",         "%F %T" },
 #else
 	{ datetime,     " %s",         "%F %T" },

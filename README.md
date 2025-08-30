@@ -34,6 +34,10 @@
     ```bash
     sudo apt install -y bat curl eza ripgrep stow tmux
     ```
+    Install [Rust](https://www.rust-lang.org/tools/install)
+    ```bash
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    ```
     Install [Cascadia Code Nerd Font](https://github.com/microsoft/cascadia-code)
     ```bash
     cp ~/.dotfiles/fonts/CascadiaCodeNF-Regular.otf ~/.local/share/fonts/
@@ -41,6 +45,12 @@
     Install [Starship](https://starship.rs/guide/#%F0%9F%9A%80-installation)
     ```bash
     curl -sS https://starship.rs/install.sh | sh
+    ```
+    Install [neovim](https://neovim.io/)
+    ```bash
+    curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-x86_64.tar.gz
+    tar xzf nvim-macos-x86_64.tar.gz
+    ./nvim-macos-x86_64/bin/nvim
     ```
 1. Clone and install links to [erichschroeter/dotfiles.git](https://github.com/erichschroeter/dotfiles)
     ```bash
@@ -89,33 +99,20 @@
     ```bash
     sudo make clean install
     ```
-1. [rterm](https://github.com/mechpen/rterm)
+1. [alacritty](https://alacritty.org/)
 
     Install [Rust](https://www.rust-lang.org/tools/install)
     ```bash
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     ```
-    Build and install rterm
     ```bash
-    cd ~/.dotfiles/ && \
-    git clone https://github.com/mechpen/rterm.git && \
-    cd rterm/
+    cargo install alacritty
     ```
+1. Install [dwm.desktop](dwm/dwm.desktop)
     ```bash
-    cargo install --locked --path $(pwd)
+    sudo cp ~/.dotfiles/dwm/dwm.desktop /usr/share/xsessions/
     ```
-1. [LightDM](https://github.com/canonical/lightdm) and [slick-greeter](https://github.com/linuxmint/slick-greeter)
-    ```bash
-    sudo apt install -y slick-greeter
-    ```
-    Configure lightdm and XSession
-    ```bash
-    cp ~/.dotfiles/dwm/{dwm.desktop,dwm-session.desktop} /usr/share/xsessions/
-    ```
-    ```bash
-    # copy .xsession.example to .xsession and modify to your liking
-    ln -st ~ ~/.dotfiles/.xsession
-    ```
+
 ## devcontainer
 
 ```bash

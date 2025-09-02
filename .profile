@@ -8,47 +8,65 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-# if running bash
+add_to_path() {
+	local dir="$1"
+	local position="${2:-append}"  # prepend or append (default: append)
+	local check_duplicates="${3:-false}"  # true/false (default: false)
+
+	[ ! -d "$dir" ] && return
+
+	if [ "$check_duplicates" = "true" ]; then
+		case ":$PATH:" in
+			*":$dir:"*) return ;;
+		esac
+	fi
+
+	if [ "$position" = "prepend" ]; then
+		PATH="$dir:$PATH"
+	else
+		PATH="$PATH:$dir"
+	fi
+}
+
+source_if_exists() {
+	[ -f "$1" ] && . "$1"
+}
+
 if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
-    fi
+	source_if_exists "$HOME/.bashrc"
 fi
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
+# Add directories to PATH
+add_to_path "$HOME/bin" "prepend"
+add_to_path "$HOME/.local/bin" "prepend"
+add_to_path "/opt/nvim-linux-x86_64/bin"
 
-# set PATH so it includes user's local python bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
+# NVM setup
+export NVM_DIR="$HOME/.nvm"
+source_if_exists "$NVM_DIR/nvm.sh"
+source_if_exists "$NVM_DIR/bash_completion"
 
-if [ -d "/opt/nvim-linux-x86_64/bin" ] ; then
-    PATH="$PATH:/opt/nvim-linux-x86_64/bin"
-fi
+# pnpm setup with duplicate checking
+export PNPM_HOME="/home/erich/.local/share/pnpm"
+add_to_path "$PNPM_HOME" "prepend" "true"
 
-# enable 256 colors if available
+# Rust environment
+source_if_exists "$HOME/.cargo/env"
+
 if [ -e /usr/share/terminfo/x/xterm-256color ]; then
 	export TERM='xterm-256color'
 else
 	export TERM='xterm-color'
 fi
 
-# Rust environment
-if [ -f "$HOME/.cargo/env" ]; then
-  . "$HOME/.cargo/env"
-fi
-
 # specify monitor positions
-#xrandr --output DVI-I-1 --auto --left-of DVI-I-2
+#if [ "$XDG_SESSION_DESKTOP" = "dwm" ]; then
+#	~/.screenlayout/2-monitors.sh
+#fi
 
 # Use same SSH agent session for all terminals.
 export SSH_AUTH_SOCK=~/.ssh/ssh-agent.$HOSTNAME.sock
 rm -f "$SSH_AUTH_SOCK"
-ssh-add -l 2>/dev/null >/dev/null
-if [ $? -ge 2 ]; then
-  ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
+if ! ssh-add -l >/dev/null 2>&1; then
+	ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
 fi

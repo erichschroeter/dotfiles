@@ -88,4 +88,5 @@ alias date='date +"%Y-%m-%dT%H:%M:%SZ"'
 
 # Ubuntu toggle mute
 alias mute='pactl set-sink-mute @DEFAULT_SINK@ toggle'
+alias volume='pactl set-sink-volume @DEFAULT_SINK@'
 

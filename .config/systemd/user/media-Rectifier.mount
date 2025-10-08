@@ -1,0 +1,15 @@
+[Unit]
+Description=Mount Rectifier CIFS share
+After=network-online.target
+Wants=network-online.target
+
+[Mount]
+What=//Rectifier/Media
+Where=/media/erich/Rectifier
+Type=cifs
+Options=credentials=/home/erich/.config/credentials_Rectifier,iocharset=utf8,file_mode=0777,dir_mode=0777,uid=erich,gid=erich
+TimeoutSec=30
+
+[Install]
+WantedBy=default.target
+

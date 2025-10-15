@@ -9,7 +9,13 @@ dump() {
 }
 
 save() {
-  dump > ~/.tmux-session
+  local session_file
+  if [ -z "$1" ]; then
+    session_file="$HOME/.tmux-session"
+  else
+    session_file="$1"
+  fi
+  dump > "$session_file"
 }
 
 terminal_size() {
@@ -30,6 +36,12 @@ new_session() {
 }
 
 restore() {
+  local session_file
+  if [ -z "$1" ]; then
+    session_file="$HOME/.tmux-session"
+  else
+    session_file="$1"
+  fi
   tmux start-server
   local count=0
   local dimensions="$(terminal_size)"
@@ -43,14 +55,14 @@ restore() {
         count=$(( count + 1 ))
       fi
     fi
-  done < ~/.tmux-session
+  done < "$session_file"
 
   echo "restored $count sessions"
 }
 
 case "$1" in
 save | restore )
-  $1
+  $1 "$2"
   ;;
 * )
   echo "valid commands: save, restore" >&2

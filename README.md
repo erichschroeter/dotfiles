@@ -32,7 +32,7 @@
     - [bat](https://github.com/sharkdp/bat)
     - [tmux](https://github.com/tmux/tmux/wiki)
     ```bash
-    sudo apt install -y bat curl eza ripgrep stow tmux
+    sudo apt install -y bat curl eza ripgrep stow tmux ncal
     ```
     Additional apps:
     ```bash

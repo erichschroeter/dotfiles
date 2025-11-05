@@ -1,0 +1,211 @@
+#!/usr/bin/env bash
+
+# Function to check if a container is running and start it if it's not.
+# If the container does not exist, it will print an error and exit.
+ensure_running() {
+  local container_name=$1
+  local container_type=$2
+  # Check if container exists (running or stopped)
+  if ! docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}$"; then
+    echo "Container ${container_name} does not exist. Please run 'container ${container_type} run' to create it." >&2
+    exit 1
+  fi
+
+  # Check if container is running
+  if ! docker ps --format '{{.Names}}' | grep -Eq "^${container_name}$"; then
+    echo "Container ${container_name} is stopped. Starting it..."
+    docker start "${container_name}" > /dev/null
+  fi
+}
+
+# --- Main Script ---
+
+CONTAINER_TYPE=$1
+COMMAND=$2
+
+# Default to interactive shell if no command is provided
+if [[ -z "$COMMAND" ]]; then
+  COMMAND="interactive"
+fi
+
+case "$CONTAINER_TYPE" in
+  linux)
+    CONTAINER_NAME="aepp-linuxaepp"
+    USER="dev"
+    DEVCONTAINER_PATH="/opt/BradyRD/AEPP-git/.devcontainer/linuxaepp"
+    IMAGE_TO_RUN="aepp1.azurecr.io/linuxaepp:qt6.8.1_4"
+    ;;
+  aarch64)
+    CONTAINER_NAME="aepp-linuxaarch64"
+    USER="dev"
+    DEVCONTAINER_PATH="/opt/BradyRD/AEPP-git/.devcontainer/linuxaarch64"
+    IMAGE_TO_RUN="aepp1.azurecr.io/stm32:1294787"
+    ;;
+  qnx)
+    CONTAINER_NAME="aepp-qnx"
+    USER="sardcodebuild"
+    DEVCONTAINER_PATH="/opt/BradyRD/AEPP-git/.devcontainer/qnx"
+    IMAGE_TO_RUN="aepp1.azurecr.io/qnx:710_qt6.5.3_4"
+    ;;
+  *)
+    echo "Usage: $0 {linux|aarch64|qnx} [build|run|exec <command...>]" >&2
+    exit 1
+    ;;
+esac
+
+case "$COMMAND" in
+  build)
+    shift 2 # Shift past <type> and build
+    if [[ $# -gt 0 ]]; then
+        echo "Error: The 'build' command does not accept additional arguments." >&2
+        echo "Usage: $0 $CONTAINER_TYPE build" >&2
+        exit 1
+    fi
+
+    IMAGE_NAME="${CONTAINER_NAME}"
+    TEMP_DIR=$(mktemp -d)
+    TEMP_DOCKERFILE="${TEMP_DIR}/Dockerfile.temp"
+    INSTALL_SCRIPT_PATH="${TEMP_DIR}/install_tools.sh"
+
+    # Create the installation script
+    cat << 'EOF' > "${INSTALL_SCRIPT_PATH}"
+#!/bin/sh
+set -e
+export DEBIAN_FRONTEND=noninteractive
+apt-get update && apt-get install -y gpg curl
+mkdir -p /etc/apt/keyrings
+wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | tee /etc/apt/sources.list.d/gierens.list
+chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+apt-get update
+curl -sS https://starship.rs/install.sh | sh -s -- -y
+apt-get install -y bat eza ripgrep stow tmux
+EOF
+    chmod +x "${INSTALL_SCRIPT_PATH}"
+
+    # Create a temporary Dockerfile that includes all necessary steps
+    cat "${DEVCONTAINER_PATH}/dockerfile" > "${TEMP_DOCKERFILE}"
+    cat << EOF >> "${TEMP_DOCKERFILE}"
+# --- Added by container script for extra tools ---
+USER root
+COPY install_tools.sh /tmp/install_tools.sh
+RUN /tmp/install_tools.sh
+USER ${USER}
+# --- End of added section ---
+EOF
+
+    echo "Building ${IMAGE_NAME} from temporary Dockerfile..."
+    docker build -t "${IMAGE_NAME}" -f "${TEMP_DOCKERFILE}" "${TEMP_DIR}"
+    BUILD_EXIT_CODE=$?
+
+    # Clean up temporary files
+    rm -rf "${TEMP_DIR}"
+
+    exit $BUILD_EXIT_CODE
+    ;;
+  run)
+    shift 2 # Shift past <type> and run
+    if [[ $# -gt 0 ]]; then
+        echo "Error: The 'run' command does not accept additional arguments." >&2
+        echo "Usage: $0 $CONTAINER_TYPE run" >&2
+        exit 1
+    fi
+    case "$CONTAINER_TYPE" in
+      linux)
+        docker run -d \
+          --name "${CONTAINER_NAME}" \
+          --env-file /opt/BradyRD/AEPP-git/.devcontainer/config/.env \
+          --dns 10.240.100.180 \
+          --dns 8.8.8.8 \
+          -v /opt/BradyRD/AEPP-git:/workspaces/AEPP-git \
+          -v aepp-bashhistory:/commandhistory \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          -v $HOME/.cache/ccache/cache:/home/dev/.cache/ccache \
+          -v $HOME/.dotfiles:/home/dev/.dotfiles \
+          -v $HOME/.config:/home/dev/.config \
+          -v $HOME/.profile:/home/dev/.profile \
+          -v $HOME/.bash_aliases:/home/dev/.bash_aliases \
+          -v $HOME/.bashrc:/home/dev/.bashrc \
+          -w /opt/BradyRD/AEPP-git \
+          "${CONTAINER_NAME}" \
+          tail -f /dev/null
+        docker exec -it "${CONTAINER_NAME}" python3 /workspaces/AEPP-git/.devcontainer/scripts/setupcontainer.py
+        ;;
+      aarch64)
+        docker run -d \
+          --name "${CONTAINER_NAME}" \
+          --env-file /opt/BradyRD/AEPP-git/.devcontainer/config/.env \
+          --dns 10.240.100.180 \
+          --dns 8.8.8.8 \
+          --privileged \
+          -v /opt/BradyRD/AEPP-git:/workspaces/AEPP-git \
+          -v aepp-bashhistory:/commandhistory \
+          -v $HOME/.cache/ccache/cache:/home/dev/.cache/ccache \
+          -v $HOME/.dotfiles:/home/dev/.dotfiles \
+          -v $HOME/.config:/home/dev/.config \
+          -v $HOME/.profile:/home/dev/.profile \
+          -v $HOME/.bash_aliases:/home/dev/.bash_aliases \
+          -v $HOME/.bashrc:/home/dev/.bashrc \
+          -w /opt/BradyRD/AEPP-git \
+          "${CONTAINER_NAME}" \
+          tail -f /dev/null
+        docker exec -it "${CONTAINER_NAME}" python3 /workspaces/AEPP-git/.devcontainer/scripts/setupcontainer.py
+        ;;
+      qnx)
+        docker run -d \
+          --name "${CONTAINER_NAME}" \
+          --env-file /opt/BradyRD/AEPP-git/.devcontainer/config/.env \
+          --dns 10.240.100.180 \
+          --dns 8.8.8.8 \
+          -v /opt/BradyRD/AEPP-git:/workspaces/AEPP-git \
+          -v $HOME/.qnx/license:/home/sardcodebuild/.qnx/license \
+          -v aepp-bashhistory:/commandhistory \
+          -v $HOME/.cache/ccache/cache:/home/sardcodebuild/.cache/ccache \
+          -v $HOME/.dotfiles:/home/dev/.dotfiles \
+          -v $HOME/.config:/home/dev/.config \
+          -v $HOME/.profile:/home/dev/.profile \
+          -v $HOME/.bash_aliases:/home/dev/.bash_aliases \
+          -v $HOME/.bashrc:/home/dev/.bashrc \
+          -w /opt/BradyRD/AEPP-git \
+          --user "${USER}" \
+          "${CONTAINER_NAME}" \
+          tail -f /dev/null
+        docker exec -it "${CONTAINER_NAME}" python3 /workspaces/AEPP-git/.devcontainer/scripts/setupcontainer.py
+        ;;
+    esac
+    ;;
+  exec)
+    shift 2 # Shift past <type> and exec
+    if [[ $# -eq 0 ]]; then
+        echo "Error: The 'exec' command requires a command to execute." >&2
+        echo "Usage: $0 $CONTAINER_TYPE exec <command...>" >&2
+        exit 1
+    fi
+    ensure_running "$CONTAINER_NAME" "$CONTAINER_TYPE"
+    docker exec -it --user "$USER" -w /workspaces/AEPP-git "$CONTAINER_NAME" "$@"
+    ;;
+  interactive)
+    shift 1 # Shift past <type>
+    if [[ $# -gt 0 ]]; then
+        echo "Error: Unknown arguments for interactive session: $@" >&2
+        echo "Usage: $0 $CONTAINER_TYPE" >&2
+        exit 1
+    fi
+    ensure_running "$CONTAINER_NAME" "$CONTAINER_TYPE"
+    docker exec -it --user "$USER" -w /workspaces/AEPP-git "$CONTAINER_NAME" /bin/bash
+    ;;
+  *)
+    echo "Error: Unknown command '$COMMAND' for $CONTAINER_TYPE" >&2
+    echo "Usage:" >&2
+    echo "  $0 {linux|aarch64|qnx}" >&2
+    echo "  $0 {linux|aarch64|qnx} build" >&2
+    echo "  $0 {linux|aarch64|qnx} run" >&2
+    echo "  $0 {linux|aarch64|qnx} exec <command...>" >&2
+    exit 1
+    ;;
+esac
+
+
+
+
+

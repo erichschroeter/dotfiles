@@ -1,3 +1,32 @@
+# Detect distro
+detect_distro() {
+    local uname_out distro
+
+    uname_out=$(uname | tr "[:upper:]" "[:lower:]")
+
+    if [ "$uname_out" = "linux" ]; then
+        if [ -f /etc/lsb-release ] || [ -d /etc/lsb-release.d ]; then
+            distro=$(lsb_release -i 2>/dev/null | cut -d: -f2 | sed 's/^[[:space:]]*//')
+        else
+            distro=$(ls -d /etc/[A-Za-z]*[_-][rv]e[lr]* 2>/dev/null \
+                | grep -v "lsb" \
+                | head -n1 \
+                | cut -d'/' -f3 \
+                | cut -d'-' -f1 \
+                | cut -d'_' -f1)
+        fi
+    fi
+
+    # Fallback: if still empty, use uname result
+    [ -z "$distro" ] && distro="$uname_out"
+
+    printf '%s\n' "$distro"
+}
+
+if [ "$(detect_distro)" = "Ubuntu" ]; then
+    alias fd='fdfind'
+fi
+
 # aliases to help with builds
 alias build='mkdir build && cd build'
 alias rbuild='cd .. && rm -r build'

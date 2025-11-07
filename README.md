@@ -129,3 +129,9 @@ curl -sS https://starship.rs/install.sh -y | sudo sh && \
 sudo apt install -y bat curl eza ripgrep stow tmux && \
 . ~/.bashrc
 ```
+
+## stow
+```bash
+cd .local && stow -t ~/.local .
+```
+

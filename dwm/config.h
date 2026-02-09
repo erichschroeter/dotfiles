@@ -38,6 +38,7 @@ static const Rule rules[] = {
 	{ "Google-chrome", NULL,       NULL,       1 << 8,       0,           -1 },
 	{ "obsidian",      NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "Slack",         NULL,       NULL,       1 << 7,       0,           -1 },
+	{ "steam",         NULL,       NULL,       1 << 1,       0,           -1 },
 };
 
 /* layout(s) */

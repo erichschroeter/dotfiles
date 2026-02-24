@@ -84,7 +84,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # ISO 8601 date format
-alias date='date +"%Y-%m-%dT%H:%M:%SZ"'
+alias date-iso8601='date +"%Y-%m-%dT%H:%M:%SZ"'
 
 # Ubuntu toggle mute
 alias mute='pactl set-sink-mute @DEFAULT_SINK@ toggle'

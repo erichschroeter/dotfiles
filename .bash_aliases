@@ -27,6 +27,51 @@ if [ "$(detect_distro)" = "Ubuntu" ]; then
     alias fd='fdfind'
 fi
 
+ssh-unlock() {
+    local conf="${1:-$HOME/.ssh/unlock.conf}"
+
+    if [ ! -f "$conf" ]; then
+        echo "Error: Configuration file not found at $conf"
+        echo "Format: /path/to/key | Bitwarden Item Name"
+        return 1
+    fi
+
+    # Ensure rbw is unlocked
+    if ! rbw status >/dev/null 2>&1; then
+        echo "Unlocking Bitwarden (rbw)..."
+        rbw unlock || return 1
+    fi
+
+    while IFS='|' read -r key_path bw_name || [ -n "$key_path" ]; do
+        # Trim whitespace
+        key_path=$(echo "$key_path" | xargs)
+        bw_name=$(echo "$bw_name" | xargs)
+
+        # Skip comments and empty lines
+        [[ -z "$key_path" || "$key_path" == \#* ]] && continue
+
+        # Expand ~ if present
+        eval key_path="$key_path"
+
+        if [ -f "$key_path" ]; then
+            local pass
+            if pass=$(rbw get "$bw_name" 2>/dev/null); then
+                echo "Unlocking $key_path using '$bw_name'..."
+                expect <<EOF
+                    spawn ssh-add "$key_path"
+                    expect "Enter passphrase"
+                    send -- "$pass\r"
+                    expect eof
+EOF
+            else
+                echo "Warning: Could not find Bitwarden item '$bw_name'"
+            fi
+        else
+            echo "Warning: SSH key not found at $key_path"
+        fi
+    done < "$conf"
+}
+
 # aliases to help with builds
 alias build='mkdir build && cd build'
 alias rbuild='cd .. && rm -r build'

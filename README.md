@@ -117,6 +117,30 @@
     sudo cp ~/.dotfiles/dwm/dwm.desktop /usr/share/xsessions/
     ```
 
+## ssh-unlock
+
+The `ssh-unlock` function (defined in `.bash_aliases`) allows you to unlock multiple SSH keys using passphrases stored in Bitwarden via `rbw`.
+
+### Prerequisites
+- [rbw](https://github.com/totoloto/rbw)
+- `expect`
+```bash
+sudo apt install expect
+```
+
+### Configuration
+Create a configuration file at `~/.ssh/unlock.conf` on each machine. Each line should map a private key path to its corresponding Bitwarden item name, separated by a pipe (`|`):
+
+```text
+/path/to/ssh/key | Bitwarden Item Name
+```
+
+Example `~/.ssh/unlock.conf`:
+```text
+~/.ssh/id_ed25519 | SSH (ED25519)
+~/.ssh/id_rsa     | SSH (RSA)
+```
+
 ## devcontainer
 
 ```bash

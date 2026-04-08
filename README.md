@@ -56,6 +56,11 @@
     tar xzf nvim-macos-x86_64.tar.gz
     ./nvim-macos-x86_64/bin/nvim
     ```
+    Install [fzf](https://github.com/junegunn/fzf)
+    ```
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
+    ```
 1. Clone and install links to [erichschroeter/dotfiles.git](https://github.com/erichschroeter/dotfiles)
     ```bash
     cd ~ && \

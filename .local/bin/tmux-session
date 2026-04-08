@@ -4,8 +4,11 @@ set -e
 
 dump() {
   local d=$'\t'
+  local logfile="/tmp/tmux-session-debug.log"
+  echo "---" > "$logfile"
   tmux list-windows -a -F "#S${d}#W${d}#{window_layout}" |
     while IFS=$'\t' read -r session window layout; do
+      echo "session='${session}' window='${window}'" >> "$logfile"
       printf "%s%s%s%s%s" "$session" "$d" "$window" "$d" "$layout"
       tmux list-panes -t "$session:$window" -F "${d}#{pane_current_path}" | tr -d '\n'
       echo
@@ -46,6 +49,7 @@ restore() {
   else
     session_file="$1"
   fi
+  echo "Using session: $session_file"
   tmux start-server
   local count=0
   local dimensions="$(terminal_size)"
@@ -93,3 +97,4 @@ save | restore )
   echo "valid commands: save, restore" >&2
   exit 1
 esac
+

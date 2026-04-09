@@ -22,3 +22,5 @@
 	required = true
 [credential]
 	helper = store
+[include]
+	path = ~/.gitconfig.local

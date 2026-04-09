@@ -39,6 +39,7 @@ static const Rule rules[] = {
 	{ "obsidian",      NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "Slack",         NULL,       NULL,       1 << 7,       0,           -1 },
 	{ "steam",         NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "STM32CubeMX",   NULL,       NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */

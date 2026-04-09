@@ -70,3 +70,6 @@ rm -f "$SSH_AUTH_SOCK"
 if ! ssh-add -l >/dev/null 2>&1; then
 	ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
 fi
+
+source_if_exists "$HOME/.profile.local"
+

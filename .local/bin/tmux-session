@@ -4,11 +4,8 @@ set -e
 
 dump() {
   local d=$'\t'
-  local logfile="/tmp/tmux-session-debug.log"
-  echo "---" > "$logfile"
   tmux list-windows -a -F "#S${d}#W${d}#{window_layout}" |
     while IFS=$'\t' read -r session window layout; do
-      echo "session='${session}' window='${window}'" >> "$logfile"
       printf "%s%s%s%s%s" "$session" "$d" "$window" "$d" "$layout"
       tmux list-panes -t "$session:$window" -F "${d}#{pane_current_path}" | tr -d '\n'
       echo
@@ -16,12 +13,7 @@ dump() {
 }
 
 save() {
-  local session_file
-  if [ -z "$1" ]; then
-    session_file="$HOME/.tmux-session"
-  else
-    session_file="$1"
-  fi
+  local session_file="${1:-$HOME/.tmux-session}"
   dump > "$session_file"
 }
 
@@ -30,25 +22,24 @@ terminal_size() {
 }
 
 session_exists() {
-  tmux has-session -t "$1" 2>/dev/null
+  tmux has-session -t "=$1" 2>/dev/null
+}
+
+window_id_by_name() {
+  tmux list-windows -t "=$1" -F "#{window_id} #{window_name}" | grep " $2$" | head -n 1 | awk '{print $1}'
 }
 
 add_window() {
-  tmux new-window -d -t "$1:" -n "$2" -c "$3"
+  tmux new-window -d -P -F "#{window_id}" -t "=$1:" -n "$2" -c "$3"
 }
 
 new_session() {
   cd "$3" &&
-  tmux new-session -d -s "$1" -n "$2" $4
+  tmux new-session -d -P -F "#{window_id}" -s "$1" -n "$2" $4
 }
 
 restore() {
-  local session_file
-  if [ -z "$1" ]; then
-    session_file="$HOME/.tmux-session"
-  else
-    session_file="$1"
-  fi
+  local session_file="${1:-$HOME/.tmux-session}"
   echo "Using session: $session_file"
   tmux start-server
   local count=0
@@ -66,23 +57,33 @@ restore() {
     local first_dir="${fields[3]}"
 
     if [[ -d "$first_dir" && $window_name != "log" && $window_name != "man" ]]; then
+      local window_id=""
       if session_exists "$session_name"; then
-        add_window "$session_name" "$window_name" "$first_dir"
+        window_id=$(window_id_by_name "$session_name" "$window_name")
+        if [ -z "$window_id" ]; then
+          window_id=$(add_window "$session_name" "$window_name" "$first_dir")
+        fi
       else
-        new_session "$session_name" "$window_name" "$first_dir" "$dimensions"
+        window_id=$(new_session "$session_name" "$window_name" "$first_dir" "$dimensions")
         count=$(( count + 1 ))
       fi
 
       if [ ${#fields[@]} -gt 4 ]; then
-        for i in $(seq 4 $((${#fields[@]} - 1))); do
-          local pane_dir="${fields[$i]}"
-          if [[ -d "$pane_dir" ]]; then
-            tmux split-window -d -t "$session_name:$window_name" -c "$pane_dir"
-          fi
-        done
+        # Check current pane count to avoid duplicate splits
+        local current_panes=$(tmux list-panes -t "$window_id" | wc -l)
+        local total_panes=$(( ${#fields[@]} - 3 ))
+        
+        if [ "$current_panes" -lt "$total_panes" ]; then
+          for i in $(seq $(( 3 + current_panes )) $((${#fields[@]} - 1))); do
+            local pane_dir="${fields[$i]}"
+            if [[ -d "$pane_dir" ]]; then
+              tmux split-window -d -t "$window_id" -c "$pane_dir"
+            fi
+          done
+        fi
       fi
 
-      tmux select-layout -t "$session_name:$window_name" "$layout"
+      tmux select-layout -t "$window_id" "$layout"
     fi
   done < "$session_file"
 
@@ -97,4 +98,3 @@ save | restore )
   echo "valid commands: save, restore" >&2
   exit 1
 esac
-

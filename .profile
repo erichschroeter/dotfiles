@@ -65,11 +65,14 @@ fi
 #fi
 
 # Use same SSH agent session for all terminals.
-export SSH_AUTH_SOCK=~/.ssh/ssh-agent.$HOSTNAME.sock
-rm -f "$SSH_AUTH_SOCK"
-if ! ssh-add -l >/dev/null 2>&1; then
-	ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
+export SSH_AUTH_SOCK="$HOME/.ssh/ssh-agent.$HOSTNAME.sock"
+
+# Only start ssh-agent if the static socket is missing or dead
+if [ ! -S "$SSH_AUTH_SOCK" ]; then
+    rm -f "$SSH_AUTH_SOCK"
+    eval "$(ssh-agent -a "$SSH_AUTH_SOCK")" > /dev/null
 fi
+
 
 source_if_exists "$HOME/.profile.local"
 

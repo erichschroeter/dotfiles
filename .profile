@@ -68,11 +68,20 @@ fi
 export SSH_AUTH_SOCK="$HOME/.ssh/ssh-agent.$HOSTNAME.sock"
 
 # Only start ssh-agent if the static socket is missing or dead
-if [ ! -S "$SSH_AUTH_SOCK" ]; then
+agent_dead=0
+if [ -S "$SSH_AUTH_SOCK" ]; then
+    ssh-add -l >/dev/null 2>&1
+    if [ $? -eq 2 ]; then
+        agent_dead=1
+    fi
+else
+    agent_dead=1
+fi
+
+if [ "$agent_dead" -eq 1 ]; then
     rm -f "$SSH_AUTH_SOCK"
     eval "$(ssh-agent -a "$SSH_AUTH_SOCK")" > /dev/null
 fi
-
 
 source_if_exists "$HOME/.profile.local"
 

@@ -1,19 +1,23 @@
 #!/usr/bin/env bash
-# Save and restore the state of tmux sessions, windows and panes.
+# Save and restore the state of multiplexer sessions, windows and panes.
 set -e
+
+# Use the MUX_BIN environment variable if set, otherwise default to "tmux"
+MUX_BIN="${MUX_BIN:-tmux}"
+BIN_NAME=$(basename "$MUX_BIN")
 
 dump() {
   local d=$'\t'
-  tmux list-windows -a -F "#S${d}#W${d}#{window_layout}" |
+  "$MUX_BIN" list-windows -a -F "#S${d}#W${d}#{window_layout}" |
     while IFS=$'\t' read -r session window layout; do
       printf "%s%s%s%s%s" "$session" "$d" "$window" "$d" "$layout"
-      tmux list-panes -t "$session:$window" -F "${d}#{pane_current_path}" | tr -d '\n'
+      "$MUX_BIN" list-panes -t "$session:$window" -F "${d}#{pane_current_path}" | tr -d '\n'
       echo
     done
 }
 
 save() {
-  local session_file="${1:-$HOME/.tmux-session}"
+  local session_file="${1:-$HOME/.${BIN_NAME}-session}"
   dump > "$session_file"
 }
 
@@ -22,26 +26,26 @@ terminal_size() {
 }
 
 session_exists() {
-  tmux has-session -t "=$1" 2>/dev/null
+  "$MUX_BIN" has-session -t "=$1" 2>/dev/null
 }
 
 window_id_by_name() {
-  tmux list-windows -t "=$1" -F "#{window_id} #{window_name}" | grep " $2$" | head -n 1 | awk '{print $1}'
+  "$MUX_BIN" list-windows -t "=$1" -F "#{window_id} #{window_name}" | grep " $2$" | head -n 1 | awk '{print $1}'
 }
 
 add_window() {
-  tmux new-window -d -P -F "#{window_id}" -t "=$1:" -n "$2" -c "$3"
+  "$MUX_BIN" new-window -d -P -F "#{window_id}" -t "=$1:" -n "$2" -c "$3"
 }
 
 new_session() {
   cd "$3" &&
-  tmux new-session -d -P -F "#{window_id}" -s "$1" -n "$2" $4
+  "$MUX_BIN" new-session -d -P -F "#{window_id}" -s "$1" -n "$2" $4
 }
 
 restore() {
-  local session_file="${1:-$HOME/.tmux-session}"
+  local session_file="${1:-$HOME/.${BIN_NAME}-session}"
   echo "Using session: $session_file"
-  tmux start-server
+  "$MUX_BIN" start-server
   local count=0
   local dimensions="$(terminal_size)"
 
@@ -70,20 +74,20 @@ restore() {
 
       if [ ${#fields[@]} -gt 4 ]; then
         # Check current pane count to avoid duplicate splits
-        local current_panes=$(tmux list-panes -t "$window_id" | wc -l)
+        local current_panes=$("$MUX_BIN" list-panes -t "$window_id" | wc -l)
         local total_panes=$(( ${#fields[@]} - 3 ))
         
         if [ "$current_panes" -lt "$total_panes" ]; then
           for i in $(seq $(( 3 + current_panes )) $((${#fields[@]} - 1))); do
             local pane_dir="${fields[$i]}"
             if [[ -d "$pane_dir" ]]; then
-              tmux split-window -d -t "$window_id" -c "$pane_dir"
+              "$MUX_BIN" split-window -d -t "$window_id" -c "$pane_dir"
             fi
           done
         fi
       fi
 
-      tmux select-layout -t "$window_id" "$layout"
+      "$MUX_BIN" select-layout -t "$window_id" "$layout"
     fi
   done < "$session_file"
 

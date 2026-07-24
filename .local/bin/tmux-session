@@ -4,7 +4,9 @@ set -e
 
 # Use the MUX_BIN environment variable if set, otherwise default to "tmux"
 MUX_BIN="${MUX_BIN:-tmux}"
-BIN_NAME=$(basename "$MUX_BIN")
+# Resolve symlinks to find the actual underlying binary name (e.g. rmux)
+REAL_BIN=$(readlink -f "$(which "$MUX_BIN" 2>/dev/null)" 2>/dev/null || echo "$MUX_BIN")
+BIN_NAME=$(basename "$REAL_BIN")
 
 dump() {
   local d=$'\t'

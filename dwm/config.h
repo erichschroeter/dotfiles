@@ -83,6 +83,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = browsercmd } },
 	{ MODKEY|ShiftMask,             XK_a,      spawn,          {.v = agentcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY|ControlMask,           XK_d,      spawn,          SHCMD("xrandr --auto") },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_i,      incnmaster,     {.i = +1 } },

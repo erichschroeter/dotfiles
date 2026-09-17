@@ -40,6 +40,7 @@ fi
 add_to_path "$HOME/bin" "prepend"
 add_to_path "$HOME/.local/bin" "prepend"
 add_to_path "/opt/nvim-linux-x86_64/bin"
+add_to_path "$HOME/.devcontainers/bin"
 
 # NVM setup
 export NVM_DIR="$HOME/.nvm"

@@ -4,6 +4,8 @@
 *.pyc
 .vim/view/
 .config/tmux/plugins/
+.config/herdr/
+!.config/herdr/config.toml
 
 # Backup files
 .bashrc.orig

@@ -3,6 +3,7 @@
 *.o
 *.pyc
 .vim/view/
+.config/nvim/lazy-lock.json
 .config/tmux/plugins/
 .config/herdr/
 !.config/herdr/config.toml

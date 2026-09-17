@@ -21,7 +21,10 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[credential]
-	helper = store
 [include]
 	path = ~/.gitconfig.local
+[credential]
+	helper = manager
+	helper = 
+	helper = /usr/local/bin/git-credential-manager
+	credentialStore = secretservice

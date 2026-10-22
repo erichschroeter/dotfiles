@@ -1,46 +1,44 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        tag = "v0.9.3",
-        event = { "BufReadPost", "BufNewFile" },
-        run = function()
-            require("nvim-treesitter.install").update({ with_sync = true })
-        end,
+        branch = "main",
+        lazy = false,
+        build = ":TSUpdate",
         config = function()
-            require("nvim-treesitter.configs").setup({
-                ensure_installed = {
-			"bitbake",
-			"c",
-			"cpp",
-			"bash",
-			"devicetree",
-			"diff",
-			"lua",
-			"python",
-			"rust",
-			"vim",
-			"vimdoc",
-			"query"
-		},
-                sync_install = false,
-                auto_install = true,
-                highlight = {
-                    enable = true,
-                    additional_vim_regex_highlighting = true,
-                },
-                incremental_selection = { enable = true },
-                autotag = { enable = true },
-                rainbow = { enable = true, disable = { "html" }, extended_mode = false },
-            })
+            local ts = require("nvim-treesitter")
+            ts.setup({})
 
-            require("ts_context_commentstring").setup({
-                enable_autocmd = false,
+            vim.api.nvim_create_autocmd("FileType", {
+                group = vim.api.nvim_create_augroup(
+                    "TreesitterHighlight",
+                    { clear = true }
+                ),
+                callback = function(event)
+                    local filetype = vim.bo[event.buf].filetype
+                    local language = vim.treesitter.language.get_lang(filetype)
+
+                    if language
+                        and vim.tbl_contains(ts.get_installed(), language)
+                    then
+                        vim.treesitter.start(event.buf, language)
+                    end
+                end,
             })
         end,
-        dependencies = {
-            { "nvim-treesitter/nvim-treesitter-textobjects" },
-            { "windwp/nvim-ts-autotag" },
-            { "JoosepAlviste/nvim-ts-context-commentstring" },
+    },
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        branch = "main",
+        lazy = false,
+    },
+    {
+        "windwp/nvim-ts-autotag",
+        opts = {},
+    },
+    {
+        "JoosepAlviste/nvim-ts-context-commentstring",
+        opts = {
+            enable_autocmd = false,
         },
     },
 }

@@ -29,20 +29,20 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class           instance    title       tags mask     isfloating   monitor */
-	{ "Brave-browser", NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "Code",          NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "code",          NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "dev.zed.Zed",   NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "discord",       NULL,       NULL,       1 << 7,       0,           -1 },
-	{ "Firefox",       NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "Gimp",          NULL,       NULL,       0,            1,           -1 },
-	{ "Google-chrome", NULL,       NULL,       1 << 8,       0,           -1 },
-	{ NULL,            NULL,       "custom-pinentry", 0,     1,           -1 },
-	{ "obsidian",      NULL,       NULL,       1 << 2,       0,           -1 },
-	{ "Slack",         NULL,       NULL,       1 << 7,       0,           -1 },
-	{ "steam",         NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "STM32CubeMX",   NULL,       NULL,       0,            1,           -1 },
+	/* class           instance    title       tags mask     iscentered   isfloating   monitor */
+	{ "Brave-browser", NULL,       NULL,       1 << 8,       0,           0,           -1 },
+	{ "Code",          NULL,       NULL,       1 << 1,       0,           0,           -1 },
+	{ "code",          NULL,       NULL,       1 << 1,       0,           0,           -1 },
+	{ "dev.zed.Zed",   NULL,       NULL,       1 << 1,       0,           0,           -1 },
+	{ "discord",       NULL,       NULL,       1 << 7,       0,           0,           -1 },
+	{ "Firefox",       NULL,       NULL,       1 << 8,       0,           0,           -1 },
+	{ "Gimp",          NULL,       NULL,       0,            0,           1,           -1 },
+	{ "Google-chrome", NULL,       NULL,       1 << 8,       0,           0,           -1 },
+	{ NULL,            NULL,       "custom-pinentry", 0,     1,           1,           -1 },
+	{ "obsidian",      NULL,       NULL,       1 << 2,       0,           0,           -1 },
+	{ "Slack",         NULL,       NULL,       1 << 7,       0,           0,           -1 },
+	{ "steam",         NULL,       NULL,       1 << 1,       0,           0,           -1 },
+	{ "STM32CubeMX",   NULL,       NULL,       0,            0,           1,           -1 },
 };
 
 /* layout(s) */

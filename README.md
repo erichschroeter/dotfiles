@@ -3,6 +3,7 @@
   - [Windows](#windows)
   - [Linux (Ubuntu)](#linux-ubuntu)
     - [dwm](#dwm)
+    - [custom-pinentry](#custom-pinentry)
   - [devcontainer](#devcontainer)
 
 ## Windows
@@ -122,6 +123,37 @@
     sudo cp ~/.dotfiles/dwm/dwm.desktop /usr/share/xsessions/
     ```
 
+### custom-pinentry
+
+`custom-pinentry` is a GTK 4 pinentry for `rbw` with a per-prompt password visibility toggle. Set it up from its source checkout (currently `~/Code/custom-pinentry`):
+
+1. Install GTK/PyGObject and [uv](https://docs.astral.sh/uv/getting-started/installation/):
+    ```bash
+    sudo apt install -y gir1.2-gtk-4.0 python3-gi python3-gi-cairo
+    cd ~/Code/custom-pinentry
+    uv venv --python /usr/bin/python3 --system-site-packages
+    uv sync
+    ```
+1. Create the rbw launcher:
+    ```bash
+    cd ~/Code/custom-pinentry
+    PROJECT_DIR="$(pwd -P)"
+    mkdir -p "$HOME/.local/bin"
+    cat > "$HOME/.local/bin/custom-pinentry" <<EOF
+    #!/bin/sh
+    export PYTHONPATH="$PROJECT_DIR/src"
+    exec "$PROJECT_DIR/.venv/bin/python" -m rbw_pinentry "\$@"
+    EOF
+    chmod 755 "$HOME/.local/bin/custom-pinentry"
+    ```
+1. Ensure `~/.local/bin` is in the `PATH` inherited by dwm/rbw, then configure rbw and restart its agent:
+    ```bash
+    rbw config set pinentry custom-pinentry
+    rbw stop-agent
+    ```
+
+The dwm rule in [`dwm/config.h`](dwm/config.h) matches the prompt's stable window title and floats it without changing the tiled layout. Rebuild and restart dwm after changing its config. See `~/Code/custom-pinentry/README.md` for testing and disposable-profile instructions.
+
 ## ssh-unlock
 
 The `ssh-unlock` function (defined in `.bash_aliases`) allows you to unlock multiple SSH keys using passphrases stored in Bitwarden via `rbw`.
@@ -163,4 +195,3 @@ sudo apt install -y bat curl eza ripgrep stow tmux && \
 ```bash
 cd .local && stow -t ~/.local .
 ```
-
